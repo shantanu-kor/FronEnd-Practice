@@ -10,19 +10,24 @@ function ExpenseItem(props) {
   // const expenseAmount = 294.67;
   // const locationOfExpenditure = "Mumbai";
 
-  return React.createElement(
-    Card,
-    {className: "expense-item"},
-    React.createElement(ExpenseDate, {date: props.date}),
-    React.createElement(ExpenseDetails, {amount: props.amount, location: props.location, title: props.title})
-  )
+  // return React.createElement(
+  //   Card,
+  //   {className: "expense-item"},
+  //   React.createElement(ExpenseDate, {date: props.date}),
+  //   React.createElement(ExpenseDetails, {amount: props.amount, location: props.location, title: props.title})
+  // )
 
-  // return (
-  //   <Card className="expense-item">
-  //     <ExpenseDate  date={props.date}/>
-  //     <ExpenseDetails amount={props.amount} location={props.location} title={props.title}/>
-  //   </Card>
-  // );
+  const clickHandler = () => {
+    console.log("Deleted!!!");
+  }
+
+  return (
+    <Card className="expense-item">
+      <ExpenseDate  date={props.date}/>
+      <ExpenseDetails amount={props.amount} location={props.location} title={props.title}/>
+      <button onClick={clickHandler}>Delete</button>
+    </Card>
+  );
 }
 
 export default ExpenseItem;
