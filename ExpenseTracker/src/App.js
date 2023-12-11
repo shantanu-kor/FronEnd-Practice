@@ -4,7 +4,8 @@ import Expenses from "./components/Expenses/Expenses";
 import NewExpense from './components/NewExpense/NewExpense';
 
 const App = () => {
-  const expenses = [
+  
+  const [expenses, setExpenses] = useState([
     {
       id: "e1",
       title: "Toilet Paper",
@@ -27,13 +28,12 @@ const App = () => {
       date: new Date(2021, 5, 12),
       location: "Pune"
     },
-  ];
-  
-  const [expenses1, setExpenses] = useState(expenses);
+  ]);
   
   const addExpenseHandler = expense => {
-    expenses.push(expense);
-    setExpenses(expenses);
+    setExpenses((prevExpenses) => {
+      return [expense, ...prevExpenses];
+    });
   }
 
   // return React.createElement(
@@ -46,7 +46,7 @@ const App = () => {
   return (
     <div>
       <NewExpense onAddExpense={addExpenseHandler} />
-      <Expenses items={expenses1}/>
+      <Expenses items={expenses}/>
     </div>
   );
 }
