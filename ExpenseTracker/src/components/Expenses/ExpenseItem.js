@@ -19,23 +19,23 @@ function ExpenseItem(props) {
   //   React.createElement(ExpenseDetails, {amount: props.amount, location: props.location, title: props.title})
   // )
 
-  const [title, setTitle] = useState(props.title);
-  const [amount, setAmount] = useState(props.amount);
+  // const [title, setTitle] = useState(props.title);
+  // const [amount, setAmount] = useState(props.amount);
 
-  const clickHandler = () => {
-    setTitle("Updated!");
-  }
+  // const clickHandler = () => {
+  //   setTitle("Updated!");
+  // }
 
-  const clickAmountHandler = () => {
-    setAmount("100");
-  }
+  // const clickAmountHandler = () => {
+  //   setAmount("100");
+  // }
 
   return (
     <Card className="expense-item">
       <ExpenseDate  date={props.date}/>
-      <ExpenseDetails amount={amount} location={props.location} title={title}/>
-      <button onClick={clickHandler}>Change Title</button>
-      <button onClick={clickAmountHandler}>Change Amount</button>
+      <ExpenseDetails amount={props.amount} location={props.location} title={props.title}/>
+      {/* <button onClick={clickHandler}>Change Title</button>
+      <button onClick={clickAmountHandler}>Change Amount</button> */}
     </Card>
   );
 }
