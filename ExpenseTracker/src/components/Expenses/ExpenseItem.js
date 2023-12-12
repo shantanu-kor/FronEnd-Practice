@@ -31,12 +31,14 @@ function ExpenseItem(props) {
   // }
 
   return (
-    <Card className="expense-item">
-      <ExpenseDate  date={props.date}/>
-      <ExpenseDetails amount={props.amount} location={props.location} title={props.title}/>
-      {/* <button onClick={clickHandler}>Change Title</button>
-      <button onClick={clickAmountHandler}>Change Amount</button> */}
-    </Card>
+    <li>
+      <Card className="expense-item">
+        <ExpenseDate  date={props.date}/>
+        <ExpenseDetails amount={props.amount} location={props.location} title={props.title}/>
+        {/* <button onClick={clickHandler}>Change Title</button>
+        <button onClick={clickAmountHandler}>Change Amount</button> */}
+      </Card>
+    </li>
   );
 }
 
