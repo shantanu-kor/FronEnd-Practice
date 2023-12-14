@@ -1,5 +1,7 @@
 # FronEnd-Practice
 
-In folder- 
+In folder-
+
 npm imstall
+
 npm start
