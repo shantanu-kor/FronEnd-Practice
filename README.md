@@ -2,6 +2,6 @@
 
 In folder-
 
-npm imstall
+npm install
 
 npm start
