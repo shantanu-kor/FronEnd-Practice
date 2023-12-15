@@ -17,7 +17,7 @@ const Login = (props) => {
     setFormIsValid(
       enteredEmail.includes('@') && enteredPassword.trim().length > 6 && enteredCollegeName.trim().length > 0
     );
-  }, [enteredEmail, enteredPassword]);
+  }, [enteredEmail, enteredPassword, enteredCollegeName]);
 
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
