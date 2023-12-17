@@ -5,7 +5,6 @@ const ProductList = (props) => {
   const deleteProductHandler = (event) => {
     const li = event.target.parentElement;
     localStorage.removeItem(li.id);
-    document.getElementById("productList").removeChild(li);
     props.change();
   }
   return (
@@ -13,7 +12,7 @@ const ProductList = (props) => {
       <h2>Products</h2>
       <ul id="productList">
         {itemList.map((item) => (
-          <li id={item.key}>{item.sellingPrice} - {item.productName}
+          <li key={item.key} id={item.key}>{item.sellingPrice} - {item.productName}
           <button type="button" onClick={deleteProductHandler}>Delete Product</button>
           </li>
         ))}
