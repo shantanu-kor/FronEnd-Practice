@@ -4,11 +4,10 @@ import ProductList from "./components/ProductList";
 import TotalPrice from "./components/TotalPrice";
 
 function App() {
-
   let itemList = Object.values(localStorage);
   itemList = itemList.map((item) => JSON.parse(item));
 
-  const [items, setItems] = useState(itemList)
+  const [items, setItems] = useState(itemList);
 
   const changeHandler = () => {
     let itemList = Object.values(localStorage);
@@ -16,21 +15,11 @@ function App() {
     setItems(itemList);
   };
 
-  const productListAndTotalPrice = () => {
-    const totalPrice = () => <TotalPrice items={items} />;
-
-    return (
-      <React.Fragment>
-        <ProductList items={items} change={changeHandler}/>
-        {totalPrice()}
-      </React.Fragment>
-    );
-  };
-
   return (
     <React.Fragment>
       <ProductInput change={changeHandler} />
-      {productListAndTotalPrice()}
+      <ProductList items={items} change={changeHandler} />
+      <TotalPrice items={items} />
     </React.Fragment>
   );
 }
