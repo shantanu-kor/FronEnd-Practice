@@ -14,8 +14,8 @@ const Navigation = (props) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#store">Store</Nav.Link>
-            <Nav.Link href="#about">About</Nav.Link>
+            <Nav.Link href="store">Store</Nav.Link>
+            <Nav.Link href="about">About</Nav.Link>
             <Button className="position-absolute end-0" variant="warning" onClick={props.onClick}>Cart {count}</Button>
           </Nav>
         </Navbar.Collapse>

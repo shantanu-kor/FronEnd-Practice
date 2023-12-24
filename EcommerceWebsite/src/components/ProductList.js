@@ -29,7 +29,7 @@ const ProductList = (props) => {
               <br />
               <img src={item[0].imageUrl} alt={item[0].title} />
               <br />
-              {item[0].price} <br />
+              Rs. {item[0].price} <br />
               <Button onClick={addToCartHandler.bind(null, { ...item[0] })}>
                 Add to Cart
               </Button>
@@ -46,7 +46,7 @@ const ProductList = (props) => {
               <br />
               <img src={item[0].imageUrl} alt={item[0].title} />
               <br />
-              {item[0].price} <br />
+              Rs. {item[0].price} <br />
               <Button onClick={addToCartHandler.bind(null, { ...item[0] })}>
                 Add to Cart
               </Button>
@@ -58,7 +58,7 @@ const ProductList = (props) => {
               <br />
               <img src={item[1].imageUrl} alt={item[1].title} />
               <br />
-              {item[1].price} <br />
+              Rs. {item[1].price} <br />
               <Button onClick={addToCartHandler.bind(null, { ...item[1] })}>
                 Add to Cart
               </Button>
