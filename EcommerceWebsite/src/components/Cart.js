@@ -17,7 +17,7 @@ const Cart = (props) => {
         {productList.map((item) => (
           <ListGroup.Item>
             Name: {item.title} <br /> Price: {item.price} <br /> Quantity: {item.quantity} <br />
-            <Button onClick={removeHandler.bind(null, item.key)}>Remove</Button>
+            <Button variant="danger" onClick={removeHandler.bind(null, item.key)}>Remove</Button>
           </ListGroup.Item>
         ))}
       </ListGroup>

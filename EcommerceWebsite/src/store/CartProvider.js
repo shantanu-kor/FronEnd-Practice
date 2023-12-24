@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CartContext from "./cartContext";
 
 const CartProvider = (props) => {
-  const [products, setProducts] = useState([
+  const staticproducts = [
     {
       key: 1,
       title: "Colors",
@@ -28,23 +28,48 @@ const CartProvider = (props) => {
         "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
       quantity: 1,
     },
-  ]);
+  ];
+  const [products, setProducts] = useState([]);
 
   const removeProductHandler = (key) => {
-    const itemIndex = products.findIndex((item) => item.key === key)
-    let items = [...products]
-    if (items[itemIndex].quantity > 1){
-        items[itemIndex] = {...items[itemIndex], quantity: items[itemIndex].quantity - 1};
-    }
-    else {
-        items.splice(itemIndex, 1);
+    const itemIndex = products.findIndex((item) => item.key === key);
+    let items = [...products];
+    if (items[itemIndex].quantity > 1) {
+      items[itemIndex] = {
+        ...items[itemIndex],
+        quantity: items[itemIndex].quantity - 1,
+      };
+    } else {
+      items.splice(itemIndex, 1);
     }
     setProducts(items);
+  };
+
+  const addProductHandler = (key, title, price, imageUrl) => {
+    const itemIndex = products.findIndex((item) => item.key === key);
+    if (itemIndex === -1) {
+      const product = {
+        key: key,
+        quantity: 1,
+        title: title,
+        price: price,
+        imageUrl: imageUrl,
+      };
+      setProducts((prevState) => [...prevState, product]);
+    } else {
+      let items = [...products];
+      items[itemIndex] = {
+        ...items[itemIndex],
+        quantity: items[itemIndex].quantity + 1,
+      };
+      setProducts(items);
+    }
   };
 
   const cartProvider = {
     productList: products,
     removeProduct: removeProductHandler,
+    addProduct: addProductHandler,
   };
 
   return (

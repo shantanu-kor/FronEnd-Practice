@@ -16,7 +16,7 @@ const Navigation = (props) => {
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#store">Store</Nav.Link>
             <Nav.Link href="#about">About</Nav.Link>
-            <Button onClick={props.onClick}>Cart {count}</Button>
+            <Button className="position-absolute end-0" variant="warning" onClick={props.onClick}>Cart {count}</Button>
           </Nav>
         </Navbar.Collapse>
       </Container>
