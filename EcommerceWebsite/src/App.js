@@ -1,5 +1,10 @@
-import { Col, Container, Row } from "react-bootstrap";
 import "./App.css";
+import React, { useState } from "react";
+
+import ProductList from "./components/ProductList";
+import Navigation from "./components/Navigation";
+import CartProvider from "./store/CartProvider";
+import Cart from "./components/Cart";
 
 function App() {
   const productsArr = [
@@ -29,29 +34,22 @@ function App() {
     },
   ];
 
-  let newProductArr = [];
-  let n = 0;
-  while (n < productsArr.length) {
-    newProductArr.push([productsArr[n], productsArr[n + 1]]);
-    n += 2;
+  const [show, setShow] = useState(false);
+
+  const showCart = () => {
+    setShow(true);
   }
+
+  const hideCart = () => {
+    setShow(false)
+  }
+
   return (
-    <Container>
-      {newProductArr.map((item) => (
-        <Row>
-          <Col>
-            {item[0].title}
-            <img src={item[0].imageUrl} alt={item[0].title} />
-            {item[0].price}
-          </Col>
-          <Col>
-            {item[1].title}
-            <img src={item[1].imageUrl} alt={item[1].title} />
-            {item[1].price}
-          </Col>
-        </Row>
-      ))}
-    </Container>
+    <CartProvider>
+      <Navigation onClick={showCart} />
+      {show && <Cart show={show} onClick={hideCart}/>}
+      <ProductList productsArr={productsArr} />
+    </CartProvider>
   );
 }
 
