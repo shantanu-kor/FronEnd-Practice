@@ -7,42 +7,71 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [error, setError] = useState(null);
+
+  const [cancel, setCancel] = useState(false);
+
   async function fetchMoviesHandler() {
     setIsLoading(true);
-    const fetchData = await fetch("https://swapi.dev/api/films/");
+    setError(null);
     try {
-      const response = fetchData;
+      const response = await fetch("https://swapi.dev/api/film/");
+
+      if (!response.ok) {
+        console.log(response.ok);
+        throw new Error("Something went wrong ....Retrying");
+      }
+
       const data = await response.json();
       let transformedMovies = [];
       try {
-        transformedMovies = data.results.map(movieData => {
+        transformedMovies = data.results.map((movieData) => {
           return {
             id: movieData.episode_id,
             title: movieData.title,
             openingText: movieData.opening_crawl,
-            releaseDate: movieData.release_date
+            releaseDate: movieData.release_date,
           };
-        })
-      } catch(e){
-        console.log(e);
+        });
+      } catch (e) {
+        setError(e.message);
       }
       setMovies(transformedMovies);
-    } catch(e){
-      console.log(e);
+    } catch (e) {
+      setError(e.message);
+      if (!cancel) {
+        setTimeout(() => fetchMoviesHandler(), 5000);
+      }
     }
     setIsLoading(false);
+  }
+
+  let content = <p>Found no Movies.</p>;
+
+  const cancelHandler = () => {
+    setCancel(true);
+    content = <p>Found no Movies.</p>;
+  }
+
+  if (movies.length > 0) {
+    content = <MoviesList movies={movies} />;
+  }
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
   }
 
   return (
     <React.Fragment>
       <section>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button><br/><br/>
+        <button onClick={cancelHandler}>Cancel</button>
       </section>
-      <section>
-        {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
-        {!isLoading && movies.length === 0 && <p>Found no Movies.</p>}
-        {isLoading && <p>Loading...</p>}
-      </section>
+      <section>{content}</section>
     </React.Fragment>
   );
 }
