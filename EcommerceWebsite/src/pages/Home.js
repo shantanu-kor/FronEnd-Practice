@@ -1,20 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
-import Navigation from "../components/Navigation";
-import CartProvider from "../store/CartProvider";
-import Cart from "../components/Cart";
 import { Button, Container, ListGroup } from "react-bootstrap";
 
 const HomePage = () => {
-  const [show, setShow] = useState(false);
-
-  const showCart = () => {
-    setShow(true);
-  };
-
-  const hideCart = () => {
-    setShow(false);
-  };
 
   const tours = [
     ["JUL 16", "DETROIT, MI", "DTE ENERGY MUSIC THEATRE"],
@@ -26,9 +14,7 @@ const HomePage = () => {
   ];
 
   return (
-    <CartProvider>
-      <Navigation onClick={showCart} />;
-      {show && <Cart show={show} onClick={hideCart} />}
+    <>
       <Container style={{ backgroundColor: "grey", textAlign: "center" }}>
         <h1 style={{ color: "white" }}>The Generics</h1>
         <Button variant="dark" className="mt-3" style={{ color: "white" }}>
@@ -44,12 +30,12 @@ const HomePage = () => {
       </h2>
       <ListGroup>
         {tours.map((item) => (
-          <ListGroup.Item style={{textAlign: "center"}}>
+          <ListGroup.Item style={{ textAlign: "center" }}>
             {item[0]} | {item[1]} | {item[2]} | <Button>Buy Tickets</Button>
           </ListGroup.Item>
         ))}
       </ListGroup>
-    </CartProvider>
+    </>
   );
 };
 

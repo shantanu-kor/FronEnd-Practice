@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
-import Cart from "../components/Cart";
 import ProductList from "../components/ProductList";
-import Navigation from "../components/Navigation";
-import CartProvider from "../store/CartProvider";
 
 const StorePage = () => {
   const productsArr = [
@@ -37,22 +34,8 @@ const StorePage = () => {
     },
   ];
 
-  const [show, setShow] = useState(false);
-
-  const showCart = () => {
-    setShow(true);
-  };
-
-  const hideCart = () => {
-    setShow(false);
-  };
-
   return (
-    <CartProvider>
-      <Navigation onClick={showCart} />
-      {show && <Cart show={show} onClick={hideCart} />}
       <ProductList productsArr={productsArr} />
-    </CartProvider>
   );
 };
 
