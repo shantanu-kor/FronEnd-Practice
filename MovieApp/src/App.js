@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import MoviesList from "./components/MoviesList";
+import AddMovieForm from "./components/AddMovieForm";
 import "./App.css";
 
 function App() {
@@ -8,8 +9,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState(null);
-
-  const [cancel, setCancel] = useState(false);
 
   const fetchMoviesHandler = useCallback(async () => {
     setIsLoading(true);
@@ -38,12 +37,10 @@ function App() {
       setMovies(transformedMovies);
     } catch (e) {
       setError(e.message);
-      if (!cancel) {
         setTimeout(() => fetchMoviesHandler(), 5000);
-      }
     }
     setIsLoading(false);
-  }, [cancel]);
+  }, []);
 
   useEffect(() => {
     fetchMoviesHandler();
@@ -51,10 +48,6 @@ function App() {
 
   let content = <p>Found no Movies.</p>;
 
-  const cancelHandler = () => {
-    setCancel(true);
-    content = <p>Found no Movies.</p>;
-  }
 
   if (movies.length > 0) {
     content = <MoviesList movies={movies} />;
@@ -68,11 +61,24 @@ function App() {
     content = <p>{error}</p>;
   }
 
+  const onSubmitHandler = (title, openingText, releaseDate) => {
+    const newMovieObj = {
+      id: Math.random().toString(),
+      title: title,
+      openingText: openingText,
+      releaseDate: releaseDate
+    }
+    setMovies(prevState => [newMovieObj, ...prevState]);
+    console.log(newMovieObj);
+  };
+
   return (
     <React.Fragment>
       <section>
+      <AddMovieForm onSubmit={onSubmitHandler}/>
+      </section>
+      <section>
         <button onClick={fetchMoviesHandler}>Fetch Movies</button><br/><br/>
-        <button onClick={cancelHandler}>Cancel</button>
       </section>
       <section>{content}</section>
     </React.Fragment>
