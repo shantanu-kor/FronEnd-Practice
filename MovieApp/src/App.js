@@ -14,43 +14,70 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://swapi.dev/api/films/");
+      const response = await fetch(
+        "https://movieapp-b55a3-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json"
+      );
 
       if (!response.ok) {
         throw new Error("Something went wrong ....Retrying");
       }
 
       const data = await response.json();
-      let transformedMovies = [];
-      try {
-        transformedMovies = data.results.map((movieData) => {
-          return {
-            id: movieData.episode_id,
-            title: movieData.title,
-            openingText: movieData.opening_crawl,
-            releaseDate: movieData.release_date,
-          };
+
+      const loadedMovies = [];
+
+      for (const key in data) {
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key].openingText,
+          releaseDate: data[key].releaseDate,
         });
-      } catch (e) {
-        setError(e.message);
       }
-      setMovies(transformedMovies);
+
+      // let transformedMovies = [];
+      // try {
+      //   transformedMovies = data.results.map((movieData) => {
+      //     return {
+      //       id: movieData.episode_id,
+      //       title: movieData.title,
+      //       openingText: movieData.opening_crawl,
+      //       releaseDate: movieData.release_date,
+      //     };
+      //   });
+      // } catch (e) {
+      //   setError(e.message);
+      // }
+      setMovies(loadedMovies);
     } catch (e) {
       setError(e.message);
-        setTimeout(() => fetchMoviesHandler(), 5000);
     }
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
     fetchMoviesHandler();
-  }, [fetchMoviesHandler])
+  }, [fetchMoviesHandler]);
 
   let content = <p>Found no Movies.</p>;
 
 
+  const deleteMovieHandler = async (id) => {
+    console.log(id);
+    const response = await fetch(
+      `https://movieapp-b55a3-default-rtdb.asia-southeast1.firebasedatabase.app/movies/${id}.json`,
+      {
+        method: "Delete",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      fetchMoviesHandler();
+    
+  }
+
   if (movies.length > 0) {
-    content = <MoviesList movies={movies} />;
+    content = <MoviesList movies={movies} deleteMovieHandler={deleteMovieHandler}/>;
   }
 
   if (isLoading) {
@@ -61,24 +88,38 @@ function App() {
     content = <p>{error}</p>;
   }
 
-  const onSubmitHandler = (title, openingText, releaseDate) => {
-    const newMovieObj = {
-      id: Math.random().toString(),
-      title: title,
-      openingText: openingText,
-      releaseDate: releaseDate
-    }
-    setMovies(prevState => [newMovieObj, ...prevState]);
-    console.log(newMovieObj);
-  };
+  const onSubmitHandler = useCallback(
+    async (title, openingText, releaseDate) => {
+      const newMovieObj = {
+        title: title,
+        openingText: openingText,
+        releaseDate: releaseDate,
+      };
+      const response = await fetch(
+        "https://movieapp-b55a3-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json",
+        {
+          method: "POST",
+          body: JSON.stringify(newMovieObj),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      fetchMoviesHandler();
+      
+    },
+    [fetchMoviesHandler]
+  );
 
   return (
     <React.Fragment>
       <section>
-      <AddMovieForm onSubmit={onSubmitHandler}/>
+        <AddMovieForm onSubmit={onSubmitHandler} />
       </section>
       <section>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button><br/><br/>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        <br />
+        <br />
       </section>
       <section>{content}</section>
     </React.Fragment>

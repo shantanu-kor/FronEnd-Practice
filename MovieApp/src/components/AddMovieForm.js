@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 
+import classes from "./AddMovieFrom.module.css";
+
 const AddMovieForm = (props) => {
   const titleRef = useRef();
   const openingTextRef = useRef();
@@ -16,14 +18,14 @@ const AddMovieForm = (props) => {
     releaseDateRef.current.value = "";
   };
   return (
-    <form onSubmit={onSubmitHandler}>
+    <form onSubmit={onSubmitHandler} className={classes.control}>
       <label htmlFor="title">Title</label>
       <br />
       <input type="text" id="title" ref={titleRef} required />
       <br />
       <label htmlFor="openingText">Opening Text</label>
       <br />
-      <input type="text" id="openingText" ref={openingTextRef} required />
+      <textarea rows="5" id="opening-text" ref={openingTextRef} required></textarea>
       <br />
       <label htmlFor="releaseDate">Release Date</label>
       <br />
