@@ -6,6 +6,7 @@ import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
 import StorePage from "./pages/Store";
 import ContactUsPage from "./pages/ContactUs";
+import ProductPage from "./pages/Product";
 
 import Navigation from "./components/Navigation";
 import Cart from "./components/Cart";
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
   { path: "/store", element: <StorePage /> },
   { path: "/", element: <StorePage /> },
   { path: "/home", element: <HomePage /> },
-  {path: "/contactUs", element: <ContactUsPage />}
+  { path: "/contactUs", element: <ContactUsPage /> },
+  { path: "/:productId", element: <ProductPage /> },
 ]);
 
 function App() {

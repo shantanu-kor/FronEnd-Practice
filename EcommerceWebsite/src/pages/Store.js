@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import ProductList from "../components/ProductList";
 
@@ -34,9 +34,13 @@ const StorePage = () => {
     },
   ];
 
-  return (
-      <ProductList productsArr={productsArr} />
-  );
+  productsArr.forEach((item) => {
+    if (localStorage.getItem(item.key) === undefined) {
+      localStorage.setItem(item.key, JSON.stringify(item));
+    }
+  });
+
+  return <ProductList productsArr={productsArr} />;
 };
 
 export default StorePage;
