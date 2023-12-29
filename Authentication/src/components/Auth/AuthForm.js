@@ -1,4 +1,5 @@
 import { useState, useRef, useContext } from "react";
+import { Link } from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
 import CredientialsContext from "../store/credientialsContext";
@@ -35,22 +36,22 @@ const AuthForm = () => {
           }),
           headers: {
             "Content-Type": "application/json",
-          }
+          },
         }
-      ).then(res => {
+      ).then((res) => {
         setIsLoading(false);
         if (res.ok) {
-          return res.json().then(data => {
+          return res.json().then((data) => {
             credCtx.addIdToken(data.idToken);
-          })
+          });
         } else {
           return res.json().then((data) => {
             let errorMessage = "Authentication Failed";
             if (data && data.error && data.error.message) {
-              errorMessage = data.error.message
+              errorMessage = data.error.message;
             }
-            alert(errorMessage)
-          })
+            alert(errorMessage);
+          });
         }
       });
     } else {
@@ -70,9 +71,9 @@ const AuthForm = () => {
       ).then((res) => {
         setIsLoading(false);
         if (res.ok) {
-          return res.json().then(data => {
+          return res.json().then((data) => {
             credCtx.addIdToken(data.idToken);
-          })
+          });
         } else {
           return res.json().then((data) => {
             let errorMessage = "Authentication Failed";
