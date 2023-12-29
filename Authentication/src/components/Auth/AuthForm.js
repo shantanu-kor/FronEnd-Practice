@@ -1,8 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 
 import classes from "./AuthForm.module.css";
+import CredientialsContext from "../store/credientialsContext";
 
 const AuthForm = () => {
+  const credCtx = useContext(CredientialsContext);
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -38,7 +41,7 @@ const AuthForm = () => {
         setIsLoading(false);
         if (res.ok) {
           return res.json().then(data => {
-            console.log(data.idToken);
+            credCtx.addIdToken(data.idToken);
           })
         } else {
           return res.json().then((data) => {
@@ -68,7 +71,7 @@ const AuthForm = () => {
         setIsLoading(false);
         if (res.ok) {
           return res.json().then(data => {
-            console.log(data.idToken);
+            credCtx.addIdToken(data.idToken);
           })
         } else {
           return res.json().then((data) => {
