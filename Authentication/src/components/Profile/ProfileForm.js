@@ -18,7 +18,7 @@ const ProfileForm = () => {
         body: JSON.stringify({
           idToken: credCtx.idToken,
           password: newPassword,
-          returnSecureToken: false,
+          returnSecureToken: true,
         }),
         headers: {
           "Content-Type": "application/json",

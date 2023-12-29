@@ -3,18 +3,21 @@ import React, { useState } from "react";
 import CredientialsContext from "./credientialsContext";
 
 const CredientialsProvider = (props) => {
-    const [token, setToken] = useState(null)
+    const [logStatus, setLogStatus] = useState(false);
     
     const removeIdTokenHandler = () => {
-        setToken(null);
+        localStorage.removeItem("token");
+        setLogStatus(false);
     };
 
     const addIdTokenHandler = (id) => {
-        setToken(id);
+        localStorage.setItem("token", id);
+        setLogStatus(true);
     };
     
     const credientials = {
-        idToken: token,
+        idToken: localStorage.getItem("token"),
+        isLoggedIn: logStatus,
         removeIdToken: removeIdTokenHandler,
         addIdToken: addIdTokenHandler,
     }
