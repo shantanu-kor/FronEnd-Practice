@@ -21,6 +21,35 @@ const AuthForm = () => {
 
     setIsLoading(true);
     if (isLogin) {
+      fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDNJq7ahOc6TCgjCqNQREFMXtm1ouBfZUo",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: enteredEmail,
+            password: enteredPassword,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      ).then(res => {
+        setIsLoading(false);
+        if (res.ok) {
+          return res.json().then(data => {
+            console.log(data.idToken);
+          })
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication Failed";
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message
+            }
+            alert(errorMessage)
+          })
+        }
+      });
     } else {
       fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDNJq7ahOc6TCgjCqNQREFMXtm1ouBfZUo",
@@ -36,8 +65,11 @@ const AuthForm = () => {
           },
         }
       ).then((res) => {
-        setIsLoading(false)
+        setIsLoading(false);
         if (res.ok) {
+          return res.json().then(data => {
+            console.log(data.idToken);
+          })
         } else {
           return res.json().then((data) => {
             let errorMessage = "Authentication Failed";
@@ -71,7 +103,13 @@ const AuthForm = () => {
           />
         </div>
         <div className={classes.actions}>
-          {isLoading ? <p>Sending Request...</p> : <button type="submit">{isLogin ? "Login" : "Create Account"}</button>}
+          {isLoading ? (
+            <p>Sending Request...</p>
+          ) : (
+            <button type="submit">
+              {isLogin ? "Login" : "Create Account"}
+            </button>
+          )}
           <button
             type="button"
             className={classes.toggle}
