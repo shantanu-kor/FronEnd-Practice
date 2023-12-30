@@ -1,7 +1,5 @@
 import React, { useRef, useContext } from "react";
 
-import { Redirect } from "react-router-dom";
-
 import AuthContext from "../store/authContext";
 
 const LoginPage = () => {
@@ -32,8 +30,7 @@ const LoginPage = () => {
     ).then((res) => {
       if (res.ok) {
         return res.json().then((data) => {
-          authCtx.addIdToken(data.idToken);
-          <Redirect to="/store" />
+          authCtx.addIdToken(data.idToken, enteredEmail);
         });
       } else {
         return res.json().then((data) => {
@@ -45,12 +42,12 @@ const LoginPage = () => {
         });
       }
     });
-    emailRef.current.value = '';
-    passwordRef.current.value = '';
+    emailRef.current.value = "";
+    passwordRef.current.value = "";
   };
 
   return (
-    <form onSubmit={onSubmitHandler} style={{textAlign: 'center'}}>
+    <form onSubmit={onSubmitHandler} style={{ textAlign: "center" }}>
       <label htmlFor="email">Email</label>
       <br />
       <input type="email" id="email" ref={emailRef} required />

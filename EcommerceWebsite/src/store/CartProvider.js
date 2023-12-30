@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import CartContext from "./cartContext";
+import AuthContext from "./authContext";
 
 const CartProvider = (props) => {
   const staticproducts = [
@@ -29,8 +30,20 @@ const CartProvider = (props) => {
       quantity: 1,
     },
   ];
+
+  const authCtx = useContext(AuthContext);
+
+  let email = authCtx.email;
+
+  if (email === null) {
+    email = "dummy@dummy.com";
+  }
+
   const [products, setProducts] = useState([]);
 
+  if (localStorage.getItem(`cart${email}`) === null) {
+    localStorage.setItem(`cart${email}`, JSON.stringify(products));
+  }
   const removeProductHandler = (key) => {
     const itemIndex = products.findIndex((item) => item.key === key);
     let items = [...products];
@@ -43,6 +56,7 @@ const CartProvider = (props) => {
       items.splice(itemIndex, 1);
     }
     setProducts(items);
+    localStorage.setItem(`cart${email}`, JSON.stringify(items));
   };
 
   const addProductHandler = (key, title, price, imageUrl) => {
@@ -63,11 +77,12 @@ const CartProvider = (props) => {
         quantity: items[itemIndex].quantity + 1,
       };
       setProducts(items);
+      localStorage.setItem(`cart${email}`, JSON.stringify(items));
     }
   };
 
   const cartProvider = {
-    productList: products,
+    productList: JSON.parse(localStorage.getItem(`cart${email}`)),
     removeProduct: removeProductHandler,
     addProduct: addProductHandler,
   };

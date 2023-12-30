@@ -12,7 +12,6 @@ import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/Login";
 
 import CartProvider from "./store/CartProvider";
-import AuthProvider from "./store/AuthProvider";
 import Layout from "./components/Layout";
 
 import AuthContext from "./store/authContext";
@@ -43,43 +42,41 @@ function App() {
   const authCtx = useContext(AuthContext);
 
   return (
-    <AuthProvider>
-      <CartProvider>
-        <Layout>
-          {/* <Navigation onClick={showCart} />
+    <CartProvider>
+      <Layout>
+        {/* <Navigation onClick={showCart} />
       {show && <Cart show={show} onClick={hideCart} />} */}
-          <Switch>
-            <Route path="/" exact>
-              <LoginPage />
-            </Route>
-            <Route path="/store" exact>
-              {authCtx.idToken !== null && <StorePage />}
-              {authCtx.idToken === null && <Redirect to="/auth" />}
-            </Route>
-            <Route path="/about">
-              <AboutPage />
-            </Route>
-            <Route path="/home">
-              <HomePage />
-            </Route>
-            <Route path="/contactUs">
-              <ContactUsPage />
-            </Route>
-            <Route path="/store/:productId">
-              <ProductPage />
-            </Route>
-            <Route path="/auth">
-              {authCtx.idToken !== null && <Redirect to="/store" />}
-              {authCtx.idToken === null && <LoginPage />}
-            </Route>
-            <Route path="*">
-              <NotFound />
-            </Route>
-          </Switch>
-          {/* <RouterProvider router={router} /> */}
-        </Layout>
-      </CartProvider>
-    </AuthProvider>
+        <Switch>
+          <Route path="/" exact>
+            <LoginPage />
+          </Route>
+          <Route path="/store" exact>
+            {authCtx.idToken !== null && <StorePage />}
+            {authCtx.idToken === null && <Redirect to="/auth" />}
+          </Route>
+          <Route path="/about">
+            <AboutPage />
+          </Route>
+          <Route path="/home">
+            <HomePage />
+          </Route>
+          <Route path="/contactUs">
+            <ContactUsPage />
+          </Route>
+          <Route path="/store/:productId">
+            <ProductPage />
+          </Route>
+          <Route path="/auth">
+            {authCtx.idToken !== null && <Redirect to="/store" />}
+            {authCtx.idToken === null && <LoginPage />}
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+        {/* <RouterProvider router={router} /> */}
+      </Layout>
+    </CartProvider>
   );
 }
 
