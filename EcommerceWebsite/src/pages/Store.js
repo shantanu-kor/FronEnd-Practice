@@ -35,7 +35,7 @@ const StorePage = () => {
   ];
 
   productsArr.forEach((item) => {
-    if (localStorage.getItem(item.key) === undefined) {
+    if (localStorage.getItem(item.key) === null) {
       localStorage.setItem(item.key, JSON.stringify(item));
     }
   });

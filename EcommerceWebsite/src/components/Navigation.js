@@ -1,30 +1,84 @@
 import React, { useContext } from "react";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+
 import CartContext from "../store/cartContext";
-import { Link } from "react-router-dom";
+import AuthContext from "../store/authContext";
 
 const Navigation = (props) => {
   const cartCtx = useContext(CartContext);
+  const AuthCtx = useContext(AuthContext);
+
   let count = 0;
   cartCtx.productList.forEach((item) => (count += item.quantity));
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand>The Generics</Navbar.Brand>
+        <Navbar.Brand>
+          <h1>The Generics</h1>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="home">Home</Nav.Link>
-            <Nav.Link href="store">Store</Nav.Link>
-            <Nav.Link href="about">About</Nav.Link>
-            <Nav.Link href="contactUs">Contact Us</Nav.Link>
-            <Button
-              className="position-absolute end-0"
-              variant="warning"
-              onClick={props.onClick}
+            <NavLink
+              to="/home"
+              className="mx-3"
+              style={(isActive) => ({
+                color: isActive ? "black" : "blue",
+                textDecoration: "inherit",
+              })}
             >
-              Cart <sup>{count}</sup>
-            </Button>
+              <h4>Home</h4>
+            </NavLink>
+            <NavLink
+              to="/store"
+              className="mx-3"
+              style={(isActive) => ({
+                color: isActive ? "black" : "blue",
+                textDecoration: "inherit",
+              })}
+            >
+              <h4>Store</h4>
+            </NavLink>
+            <NavLink
+              to="/about"
+              className="mx-3"
+              style={(isActive) => ({
+                color: isActive ? "black" : "blue",
+                textDecoration: "inherit",
+              })}
+            >
+              <h4>About</h4>
+            </NavLink>
+            <NavLink
+              to="/contactUs"
+              className="mx-3"
+              style={(isActive) => ({
+                color: isActive ? "black" : "blue",
+                textDecoration: "inherit",
+              })}
+            >
+              <h4>Contact Us</h4>
+            </NavLink>
+            <NavLink
+              to="/Auth"
+              className="mx-3"
+              style={(isActive) => ({
+                color: isActive ? "black" : "blue",
+                textDecoration: "inherit",
+              })}
+            >
+              <h4>Login</h4>
+            </NavLink>
+            {AuthCtx.idToken && (
+              <Button
+                className="position-absolute end-0"
+                variant="warning"
+                onClick={props.onClick}
+              >
+                Cart <sup>{count}</sup>
+              </Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -38,10 +92,10 @@ const Navigation = (props) => {
     //   }}
     // >
     //   <h1>The Generics</h1>
-    //   <Link to="/home">Home</Link>
-    //   <Link to="/store">Store</Link>
-    //   <Link to="/about">About</Link>
-    //   <Link to="/contactUs">Contact Us</Link>
+    //   <NavLink to="/home">Home</NavLink>
+    //   <NavLink to="/store">Store</NavLink>
+    //   <NavLink to="/about">About</NavLink>
+    //   <NavLink to="/contactUs">Contact Us</NavLink>
     // </nav>
   );
 };

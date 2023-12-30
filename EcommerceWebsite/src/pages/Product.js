@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ProductPage = () => {
   const params = useParams();
@@ -26,7 +26,10 @@ const ProductPage = () => {
           </Col>
         </Row>
       </Container>
-      <h2 style={{ textAlign: "center" }}>Price: Rs. {item.price}</h2>
+      <h2 style={{ textAlign: "center" }}>Price: Rs. {item.price}</h2><br /><br />
+      <div style={{ textAlign: "center" }}>
+        <Link to="/store"><h4>Back to Store</h4></Link>
+      </div>
     </React.Fragment>
   );
 };
