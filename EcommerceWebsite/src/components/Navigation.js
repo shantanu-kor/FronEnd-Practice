@@ -61,7 +61,7 @@ const Navigation = (props) => {
               <h4>Contact Us</h4>
             </NavLink>
             <NavLink
-              to="/Auth"
+              to="/auth"
               className="mx-3"
               style={(isActive) => ({
                 color: isActive ? "black" : "blue",

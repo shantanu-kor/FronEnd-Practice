@@ -16,7 +16,7 @@ const AuthProvider = (props) => {
   };
 
   const authContext = {
-    idToken: token,
+    idToken: localStorage.getItem("token"),
     addIdToken: addTokenHandler,
     removeIdToken: removeTokenHandler,
   };

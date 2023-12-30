@@ -53,7 +53,8 @@ function App() {
               <LoginPage />
             </Route>
             <Route path="/store" exact>
-              <StorePage />
+              {authCtx.idToken !== null && <StorePage />}
+              {authCtx.idToken === null && <Redirect to="/auth" />}
             </Route>
             <Route path="/about">
               <AboutPage />
@@ -68,7 +69,7 @@ function App() {
               <ProductPage />
             </Route>
             <Route path="/auth">
-              {authCtx.idToken && <Redirect to="/store" />}
+              {authCtx.idToken !== null && <Redirect to="/store" />}
               {authCtx.idToken === null && <LoginPage />}
             </Route>
             <Route path="*">

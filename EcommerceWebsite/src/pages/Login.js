@@ -45,6 +45,8 @@ const LoginPage = () => {
         });
       }
     });
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
   };
 
   return (
