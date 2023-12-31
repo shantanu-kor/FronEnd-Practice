@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CartContext from "./cartContext";
 import AuthContext from "./authContext";
 
@@ -39,11 +39,46 @@ const CartProvider = (props) => {
     email = "dummy@dummy.com";
   }
 
+  let email1 = email.split("@");
+  let email2 = "";
+  for (let i of email1) {
+    email2 += i;
+  }
+  email1 = email2.split(".");
+  email2 = "";
+  for (let i of email1) {
+    email2 += i;
+  }
+
+  const id = "071128c7f65f478ebd0382a843ba157d";
+  const url = `https://crudcrud.com/api/${id}/${email2}`;
+
   const [products, setProducts] = useState([]);
 
-  if (localStorage.getItem(`cart${email}`) === null) {
-    localStorage.setItem(`cart${email}`, JSON.stringify(products));
-  }
+  // if (localStorage.getItem(`cart${email}`) === null) {
+  //   localStorage.setItem(`cart${email}`, JSON.stringify(products));
+  // }
+
+  useEffect(() => {
+    fetch(url).then((res) => {
+      res.json().then((data) => {
+        if (data.length === 0) {
+          fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+              items: [],
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        } else {
+          setProducts(data[0].items);
+        }
+      });
+    });
+  }, [url]);
+
   const removeProductHandler = (key) => {
     const itemIndex = products.findIndex((item) => item.key === key);
     let items = [...products];
@@ -55,8 +90,26 @@ const CartProvider = (props) => {
     } else {
       items.splice(itemIndex, 1);
     }
-    setProducts(items);
-    localStorage.setItem(`cart${email}`, JSON.stringify(items));
+    // localStorage.setItem(`cart${email}`, JSON.stringify(items));
+    fetch(url).then((res) => {
+      res.json().then((data) => {
+        const url1 = `${url}/${data[0]._id}`;
+        fetch(url1, {
+          method: "PUT",
+          body: JSON.stringify({
+            items: items,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      });
+    });
+    fetch(url).then((res) => {
+      res.json().then((data) => {
+        setProducts(data[0].items);
+      });
+    });
   };
 
   const addProductHandler = (key, title, price, imageUrl) => {
@@ -76,13 +129,31 @@ const CartProvider = (props) => {
         ...items[itemIndex],
         quantity: items[itemIndex].quantity + 1,
       };
-      setProducts(items);
-      localStorage.setItem(`cart${email}`, JSON.stringify(items));
+      // localStorage.setItem(`cart${email}`, JSON.stringify(items));
+      fetch(url).then((res) => {
+        res.json().then((data) => {
+          const url1 = `${url}/${data[0]._id}`;
+          fetch(url1, {
+            method: "PUT",
+            body: JSON.stringify({
+              items: items,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        });
+      });
+      fetch(url).then((res) => {
+        res.json().then((data) => {
+          setProducts(data[0].items);
+        });
+      });
     }
   };
 
   const cartProvider = {
-    productList: JSON.parse(localStorage.getItem(`cart${email}`)),
+    productList: products,
     removeProduct: removeProductHandler,
     addProduct: addProductHandler,
   };

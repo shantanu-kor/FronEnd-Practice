@@ -1,17 +1,16 @@
 import "./App.css";
-import React, { useContext } from "react";
+import React, { useContext, lazy, Suspense } from "react";
 // import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import HomePage from "./pages/Home";
-import AboutPage from "./pages/About";
+// import HomePage from "./pages/Home";
+// import AboutPage from "./pages/About";
 import StorePage from "./pages/Store";
-import ContactUsPage from "./pages/ContactUs";
+// import ContactUsPage from "./pages/ContactUs";
 import ProductPage from "./pages/Product";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/Login";
 
-import CartProvider from "./store/CartProvider";
 import Layout from "./components/Layout";
 
 import AuthContext from "./store/authContext";
@@ -25,6 +24,10 @@ import AuthContext from "./store/authContext";
 //   { path: "/:productId", element: <ProductPage /> },
 //   { path: "*", element: <NotFound /> },
 // ]);
+
+const AboutPage = lazy(() => import('./pages/About'));
+const ContactUsPage = lazy(() => import('./pages/ContactUs'));
+const HomePage = lazy(() => import('./pages/Home'));
 
 function App() {
   // return <RouterProvider router={router} />;
@@ -42,41 +45,39 @@ function App() {
   const authCtx = useContext(AuthContext);
 
   return (
-    <CartProvider>
-      <Layout>
-        {/* <Navigation onClick={showCart} />
+    <Layout>
+      {/* <Navigation onClick={showCart} />
       {show && <Cart show={show} onClick={hideCart} />} */}
-        <Switch>
-          <Route path="/" exact>
-            <LoginPage />
-          </Route>
-          <Route path="/store" exact>
-            {authCtx.idToken !== null && <StorePage />}
-            {authCtx.idToken === null && <Redirect to="/auth" />}
-          </Route>
-          <Route path="/about">
-            <AboutPage />
-          </Route>
-          <Route path="/home">
-            <HomePage />
-          </Route>
-          <Route path="/contactUs">
-            <ContactUsPage />
-          </Route>
-          <Route path="/store/:productId">
-            <ProductPage />
-          </Route>
-          <Route path="/auth">
-            {authCtx.idToken !== null && <Redirect to="/store" />}
-            {authCtx.idToken === null && <LoginPage />}
-          </Route>
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
-        {/* <RouterProvider router={router} /> */}
-      </Layout>
-    </CartProvider>
+      <Switch>
+        <Route path="/" exact>
+          <LoginPage />
+        </Route>
+        <Route path="/store" exact>
+          {authCtx.idToken !== null && <StorePage />}
+          {authCtx.idToken === null && <Redirect to="/auth" />}
+        </Route>
+        <Route path="/about">
+          <Suspense fallback={<p>Loading...</p>}><AboutPage /></Suspense>
+        </Route>
+        <Route path="/home">
+          <Suspense fallback={<p>Loading...</p>}><HomePage /></Suspense>
+        </Route>
+        <Route path="/contactUs">
+          <Suspense fallback={<p>Loading...</p>}><ContactUsPage /></Suspense>
+        </Route>
+        <Route path="/store/:productId">
+          <ProductPage />
+        </Route>
+        <Route path="/auth">
+          {authCtx.idToken !== null && <Redirect to="/store" />}
+          {authCtx.idToken === null && <LoginPage />}
+        </Route>
+        <Route path="*">
+          <NotFound />
+        </Route>
+      </Switch>
+      {/* <RouterProvider router={router} /> */}
+    </Layout>
   );
 }
 
