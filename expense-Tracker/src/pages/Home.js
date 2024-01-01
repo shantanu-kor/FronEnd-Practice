@@ -12,6 +12,7 @@ const HomePage = () => {
         <Col className="border">
         <h3 className="border-bottom">Your profile is Incomplete. <Link to="/profile">Complete Now</Link></h3>
         </Col>
+        <h3><Link to="/verifyEmail">Verify Email</Link></h3>
       </Row>
     </Container>
   );

@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import AuthenticationPage from "./pages/Authentication";
 import HomePage from "./pages/Home";
 import ProfilePage from "./pages/Profile";
+import VerifyEmailPage from "./pages/VerifyEmail";
 
 import AuthContext from "./store/authContext";
 import "./App.css";
@@ -19,7 +20,11 @@ function App() {
       </Route>
       <Route path="/profile" exact>
         {authCtx.idToken && <ProfilePage />}
-        {!authCtx.idToken && <AuthenticationPage />}
+        {!authCtx.idToken && <Redirect to="/" />}
+      </Route>
+      <Route path="/verifyEmail">
+        {authCtx.idToken && <VerifyEmailPage />}
+        {!authCtx.idToken && <Redirect to="/" />}
       </Route>
     </Switch>
   );
