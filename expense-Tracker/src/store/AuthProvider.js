@@ -14,9 +14,15 @@ const AuthProvider = (props) => {
         setToken(id);
     }
 
+    const removeTokenHandler = () => {
+        localStorage.removeItem("token");
+        setToken(null);
+    };
+
     const authProvider = {
         idToken: token,
         setIdToken: setIdTokenHandler,
+        removeToken: removeTokenHandler, 
     };
     
     return <AuthContext.Provider value={authProvider}>
