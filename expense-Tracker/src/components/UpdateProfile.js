@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
 
 import AuthContext from "../store/authContext";
@@ -9,26 +9,49 @@ const UpdateProfile = () => {
 
   const authCtx = useContext(AuthContext);
 
+  useEffect(() => {
+    async function getData() {
+      const res = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyD73Oj20xEgcVTp_n7OuZuKlYiMVjXQy-8",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            idToken: authCtx.idToken,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let data = await res.json();
+      data = data.users[0];
+      nameRef.current.value = data.displayName;
+      photoRef.current.value = data.photoUrl;
+    }
+    getData();
+  }, [authCtx.idToken]);
+
   const submitHandler = async (event) => {
     event.preventDefault();
     const name = nameRef.current.value;
     const photo = photoRef.current.value;
 
-    const res = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyD73Oj20xEgcVTp_n7OuZuKlYiMVjXQy-8", {
-        method: "POST", 
+    await fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyD73Oj20xEgcVTp_n7OuZuKlYiMVjXQy-8",
+      {
+        method: "POST",
         body: JSON.stringify({
-            idToken: authCtx.idToken,
-            displayName: name,
-            photoUrl: photo,
-            deleteAttribute: null,
-            returnSecureToken: true,
+          idToken: authCtx.idToken,
+          displayName: name,
+          photoUrl: photo,
+          deleteAttribute: null,
+          returnSecureToken: true,
         }),
         headers: {
-            "Content-Type": "application/json",
-        }
-    });
-    const data = await res.json();
-    console.log(data);
+          "Content-Type": "application/json",
+        },
+      }
+    );
   };
 
   return (
@@ -41,7 +64,9 @@ const UpdateProfile = () => {
       <br />
       <input type="text" id="photo" ref={photoRef} required />
       <br />
-      <Button className="my-3" type="submit">Update</Button>
+      <Button className="my-3" type="submit">
+        Update
+      </Button>
     </form>
   );
 };

@@ -13,11 +13,12 @@ function App() {
 
   return (
     <Switch>
-      <Route to="/profile" exact>
-        <ProfilePage />
-      </Route>
-      <Route to="/" exact>
+      <Route path="/" exact>
         {authCtx.idToken && <HomePage />}
+        {!authCtx.idToken && <AuthenticationPage />}
+      </Route>
+      <Route path="/profile" exact>
+        {authCtx.idToken && <ProfilePage />}
         {!authCtx.idToken && <AuthenticationPage />}
       </Route>
     </Switch>
