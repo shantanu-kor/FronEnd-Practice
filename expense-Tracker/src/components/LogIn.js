@@ -1,9 +1,12 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { Button, Container } from "react-bootstrap";
+import AuthContext from "../store/authContext";
 
 const LogIn = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
+
+  const authCtx = useContext(AuthContext);
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -27,7 +30,7 @@ const LogIn = () => {
     );
     const data = await res.json();
     if (res.ok) {
-      localStorage.setItem("token", data.idToken);
+      authCtx.setIdToken(data.idToken);
     } else {
       let errMessage = "Authentication Failed...";
       if (data && data.error && data.error.message) {
@@ -41,7 +44,7 @@ const LogIn = () => {
   };
 
   return (
-    <Container className="border border-5 w-25 rounded-3 border-secondary">
+    <Container className="border border-5 w-25 rounded-3 border-secondary mt-3">
       <h2 style={{ textAlign: "center" }}>LogIn</h2>
       <form
         style={{ textAlign: "center" }}
