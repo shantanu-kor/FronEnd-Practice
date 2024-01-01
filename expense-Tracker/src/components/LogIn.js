@@ -1,6 +1,7 @@
 import React, { useContext, useRef } from "react";
 import { Button, Container } from "react-bootstrap";
 import AuthContext from "../store/authContext";
+import { Link } from "react-router-dom";
 
 const LogIn = () => {
   const emailRef = useRef();
@@ -75,7 +76,10 @@ const LogIn = () => {
           required
         />
         <br />
-        <Button type="submit" className="my-3">
+        <div className="my-2">
+        <Link to="/forgotPassword">Forgot Password</Link>
+        </div>
+        <Button type="submit" className="my-1">
           LogIn
         </Button>
       </form>

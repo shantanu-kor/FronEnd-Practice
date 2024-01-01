@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import AuthContext from "../store/authContext";
 
@@ -25,8 +26,12 @@ const UpdateProfile = () => {
       );
       let data = await res.json();
       data = data.users[0];
-      nameRef.current.value = data.displayName;
-      photoRef.current.value = data.photoUrl;
+      if (data.displayName !== undefined) {
+        nameRef.current.value = data.displayName;
+      }
+      if (data.photoUrl !== undefined) {
+        photoRef.current.value = data.photoUrl;
+      }
     }
     getData();
   }, [authCtx.idToken]);
@@ -55,19 +60,24 @@ const UpdateProfile = () => {
   };
 
   return (
-    <form style={{ textAlign: "center" }} onSubmit={submitHandler}>
-      <label htmlFor="name">Full Name</label>
-      <br />
-      <input type="text" id="name" ref={nameRef} required />
-      <br />
-      <label htmlFor="photo">Profile Photo URL</label>
-      <br />
-      <input type="text" id="photo" ref={photoRef} required />
-      <br />
-      <Button className="my-3" type="submit">
-        Update
-      </Button>
-    </form>
+    <React.Fragment>
+      <form style={{ textAlign: "center" }} onSubmit={submitHandler}>
+        <label htmlFor="name">Full Name</label>
+        <br />
+        <input type="text" id="name" ref={nameRef} required />
+        <br />
+        <label htmlFor="photo">Profile Photo URL</label>
+        <br />
+        <input type="text" id="photo" ref={photoRef} required />
+        <br />
+        <Button className="my-3" type="submit">
+          Update
+        </Button>
+      </form>
+      <div style={{ textAlign: "center" }}>
+        <Link to="/">To home</Link>
+      </div>
+    </React.Fragment>
   );
 };
 

@@ -8,6 +8,7 @@ import VerifyEmailPage from "./pages/VerifyEmail";
 
 import AuthContext from "./store/authContext";
 import "./App.css";
+import ForgotPasswordPage from "./pages/ForgotPassword";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -25,6 +26,9 @@ function App() {
       <Route path="/verifyEmail">
         {authCtx.idToken && <VerifyEmailPage />}
         {!authCtx.idToken && <Redirect to="/" />}
+      </Route>
+      <Route path="/forgotPassword">
+        <ForgotPasswordPage />
       </Route>
     </Switch>
   );
