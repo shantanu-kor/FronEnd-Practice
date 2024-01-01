@@ -34,7 +34,7 @@ const SignUp = () => {
       );
       const data = await res.json();
       if (res.ok) {
-        console.log(`idToken: ${data.idToken}`);
+        localStorage.setItem("token", data.idToken);
       } else {
         let errMessage = "Authentication Failed..."
         if (data && data.error && data.error.message) {
