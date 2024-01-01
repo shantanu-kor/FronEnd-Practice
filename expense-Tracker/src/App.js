@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
+import { Route, Switch } from "react-router-dom";
 
-import { Route } from "react-router-dom";
 import AuthenticationPage from "./pages/Authentication";
 import HomePage from "./pages/Home";
+import ProfilePage from "./pages/Profile";
 
 import AuthContext from "./store/authContext";
 import "./App.css";
@@ -11,11 +12,15 @@ function App() {
   const authCtx = useContext(AuthContext);
 
   return (
-    <React.Fragment>
-      <Route to="/">
-        {authCtx.idToken !== null  ? <HomePage /> : <AuthenticationPage />}
+    <Switch>
+      <Route to="/profile" exact>
+        <ProfilePage />
       </Route>
-    </React.Fragment>
+      <Route to="/" exact>
+        {authCtx.idToken && <HomePage />}
+        {!authCtx.idToken && <AuthenticationPage />}
+      </Route>
+    </Switch>
   );
 }
 
