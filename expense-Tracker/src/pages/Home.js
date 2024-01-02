@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,17 @@ import ExpenseInput from "../components/ExpenseInput";
 import ExpensesList from "../components/ExpensesList";
 
 const HomePage = () => {
+  const [item, setItem] = useState(null);
+
+
+  const onChangeHandler = (item) => {
+    setItem(item);
+  };
+
+  const onResetHandler = () => {
+    setItem(null);
+  }
+
   return (
     <React.Fragment>
       <Container>
@@ -30,10 +41,10 @@ const HomePage = () => {
           </Col>
         </Row>
       </Container>
-      <h2 style={{textAlign: 'center'}}>New Expense</h2>
-      <ExpenseInput />
-      <h2 style={{textAlign: 'center'}}>Expenses</h2>
-      <ExpensesList />
+      <h2 style={{ textAlign: "center" }}>New Expense</h2>
+      <ExpenseInput item={item} onReset={onResetHandler} />
+      <h2 style={{ textAlign: "center" }}>Expenses</h2>
+      <ExpensesList onChange={onChangeHandler} />
     </React.Fragment>
   );
 };

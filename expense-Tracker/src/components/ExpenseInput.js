@@ -2,10 +2,17 @@ import React, { useContext, useRef } from "react";
 import { Button } from "react-bootstrap";
 import ExpenseContext from "../store/expenseContext";
 
-const ExpenseInput = () => {
+const ExpenseInput = (props) => {
   const amountRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
+
+  if (props.item !== null) {
+    amountRef.current.value = props.item.amount;
+    descriptionRef.current.value = props.item.description;
+    categoryRef.current.value = props.item.category;
+    props.onReset();
+  }
 
   const expenseCtx = useContext(ExpenseContext);
 

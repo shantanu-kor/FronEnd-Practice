@@ -1,16 +1,32 @@
 import React, { useContext } from "react";
 import ExpenseContext from "../store/expenseContext";
-import { Col, Container, ListGroup, Row } from "react-bootstrap";
+import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
 
-const ExpensesList = () => {
+const ExpensesList = (props) => {
   const expenseCtx = useContext(ExpenseContext);
+
+  const deleteHandler = (key) => {
+    expenseCtx.deleteExpense(key);
+  };
+
+  const editHandler = (item) => {
+    expenseCtx.deleteExpense(item.key);
+    props.onChange(item);
+  };
+
   return (
     <React.Fragment>
       <Container>
         <Row>
-          <Col style={{textAlign: 'center', fontWeight: 'bold'}}>Amount</Col>
-          <Col style={{textAlign: 'center', fontWeight: 'bold'}}>Description</Col>
-          <Col style={{textAlign: 'center', fontWeight: 'bold'}}>Category</Col>
+          <Col style={{ textAlign: "center", fontWeight: "bold" }}>Amount</Col>
+          <Col style={{ textAlign: "center", fontWeight: "bold" }}>
+            Description
+          </Col>
+          <Col style={{ textAlign: "center", fontWeight: "bold" }}>
+            Category
+          </Col>
+          <Col style={{ textAlign: "center", fontWeight: "bold" }}>Delete</Col>
+          <Col style={{ textAlign: "center", fontWeight: "bold" }}>Edit</Col>
         </Row>
       </Container>
       <ListGroup>
@@ -21,6 +37,12 @@ const ExpensesList = () => {
                 <Col>{item.amount}</Col>
                 <Col>{item.description}</Col>
                 <Col>{item.category}</Col>
+                <Col>
+                  <Button onClick={deleteHandler.bind(null, item.key)}>Delete</Button>
+                </Col>
+                <Col>
+                  <Button onClick={editHandler.bind(null, item)}>Edit</Button>
+                </Col>
               </Row>
             </Container>
           </ListGroup.Item>

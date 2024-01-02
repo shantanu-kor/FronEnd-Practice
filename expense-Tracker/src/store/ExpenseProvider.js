@@ -5,18 +5,18 @@ import ExpenseContext from "./expenseContext";
 const ExpenseProvider = (props) => {
   const [expenseList, setExpenseList] = useState([]);
 
-  useEffect(() => {
-    async function getData() {
-      const res = await fetch(
-        "https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json"
-      );
-      const data = await res.json();
-      if (data !== null) {
-        for (let i of Object.values(data)) {
-            setExpenseList(prevState => [i, ...prevState])
-        }
+  async function getData() {
+    const res = await fetch(
+      "https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json"
+    );
+    const data = await res.json();
+    if (data !== null) {
+      for (let i of Object.values(data)) {
+        setExpenseList((prevState) => [i, ...prevState]);
       }
     }
+  }
+  useEffect(() => {
     getData();
   }, []);
 
@@ -42,9 +42,30 @@ const ExpenseProvider = (props) => {
     setExpenseList((prevState) => [data, ...prevState]);
   };
 
+  const deleteExpenseHandler = async (key) => {
+    const res = await fetch(
+      "https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json"
+    );
+    const data = await res.json();
+    for (let [i, j] of Object.entries(data)) {
+      if (j.key === key) {
+        await fetch(
+          `https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses/${i}.json`,
+          {
+            method: "DELETE",
+          }
+        );
+        break;
+      }
+    }
+    setExpenseList([]);
+    getData();
+  };
+
   const expenseProvider = {
     expenseList: expenseList,
     addExpense: addExpenseHandler,
+    deleteExpense: deleteExpenseHandler,
   };
 
   return (
