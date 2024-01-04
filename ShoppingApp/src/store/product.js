@@ -3,13 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialProductState = {
   products: [
     {
-      key: Math.random().toString(),
+      key: 1,
       title: "Test",
       price: 6,
       description: "This is a first product - amazing!",
     },
     {
-        key: Math.random().toString(),
+        key: 2,
         title: "Book",
         price: 5,
         description: "This is the first book."

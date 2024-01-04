@@ -19,36 +19,48 @@ function App() {
 
   useEffect(() => {
     async function send() {
-      const res = await fetch(
-        "https://shoppingapp-75c61-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json"
-      );
-      const data = await res.json();
-      if (!res.ok) {
-        if (data && data.error && data.error.message) {
-          setError(true);
+      try {
+        const res = await fetch(
+          "https://shoppingapp-75c61-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json"
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          if (data && data.error && data.error.message) {
+            setError(true);
+          }
+        } else {
+          if (data === null) {
+            dispatch(cartActions.setCart([]));
+          } else {
+            dispatch(cartActions.setCart(data));
+          }
         }
-      } else {
-        dispatch(cartActions.setCart(data))
+      } catch {
+        setError(true);
       }
     }
     send();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setSending(true);
     async function send() {
-      const res = await fetch(
-        "https://shoppingapp-75c61-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json",
-        {
-          method: "PUT",
-          body: JSON.stringify(cart),
+      try {
+        const res = await fetch(
+          "https://shoppingapp-75c61-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json",
+          {
+            method: "PUT",
+            body: JSON.stringify(cart),
+          }
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          if (data && data.error && data.error.message) {
+            setError(true);
+          }
         }
-      );
-      const data = await res.json();
-      if (!res.ok) {
-        if (data && data.error && data.error.message) {
-          setError(true);
-        }
+      } catch {
+        setError(true);
       }
     }
     send();
