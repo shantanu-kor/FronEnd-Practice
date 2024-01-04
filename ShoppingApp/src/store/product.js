@@ -8,6 +8,12 @@ const initialProductState = {
       price: 6,
       description: "This is a first product - amazing!",
     },
+    {
+        key: Math.random().toString(),
+        title: "Book",
+        price: 5,
+        description: "This is the first book."
+    },
   ],
 };
 

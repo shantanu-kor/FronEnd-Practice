@@ -39,6 +39,9 @@ const cartSlice = createSlice({
         state.cartProducts[index].total -= state.cartProducts[index].price
       }
     },
+    setCart(state, action) {
+        state.cartProducts = action.payload;
+    },
   },
 });
 
