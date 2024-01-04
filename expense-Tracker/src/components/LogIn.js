@@ -1,13 +1,16 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef } from "react";
 import { Button, Container } from "react-bootstrap";
-import AuthContext from "../store/authContext";
 import { Link } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/auth";
+import { setToken } from "../store/token";
 
 const LogIn = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const authCtx = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -31,7 +34,8 @@ const LogIn = () => {
     );
     const data = await res.json();
     if (res.ok) {
-      authCtx.setIdToken(data.idToken);
+      setToken(data.idToken);
+      dispatch(authActions.login());
     } else {
       let errMessage = "Authentication Failed...";
       if (data && data.error && data.error.message) {

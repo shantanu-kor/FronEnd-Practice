@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import AuthContext from "../store/authContext";
+import { getToken } from "../store/token";
 
 const UpdateProfile = () => {
   const nameRef = useRef();
   const photoRef = useRef();
 
-  const authCtx = useContext(AuthContext);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -17,7 +17,7 @@ const UpdateProfile = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken: authCtx.idToken,
+            idToken: getToken(),
           }),
           headers: {
             "Content-Type": "application/json",
@@ -25,6 +25,7 @@ const UpdateProfile = () => {
         }
       );
       let data = await res.json();
+      console.log(data);
       data = data.users[0];
       if (data.displayName !== undefined) {
         nameRef.current.value = data.displayName;
@@ -33,20 +34,22 @@ const UpdateProfile = () => {
         photoRef.current.value = data.photoUrl;
       }
     }
+    setUpdating(true);
     getData();
-  }, [authCtx.idToken]);
+    setUpdating(false);
+  }, []);
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    setUpdating(true);
     const name = nameRef.current.value;
     const photo = photoRef.current.value;
-
     await fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyD73Oj20xEgcVTp_n7OuZuKlYiMVjXQy-8",
       {
         method: "POST",
         body: JSON.stringify({
-          idToken: authCtx.idToken,
+          idToken: getToken(),
           displayName: name,
           photoUrl: photo,
           deleteAttribute: null,
@@ -57,6 +60,7 @@ const UpdateProfile = () => {
         },
       }
     );
+    setUpdating(false);
   };
 
   return (
@@ -70,9 +74,13 @@ const UpdateProfile = () => {
         <br />
         <input type="text" id="photo" ref={photoRef} required />
         <br />
-        <Button className="my-3" type="submit">
-          Update
-        </Button>
+        {updating ? (
+          <p>Updating...</p>
+        ) : (
+          <Button className="my-3" type="submit">
+            Update
+          </Button>
+        )}
       </form>
       <div style={{ textAlign: "center" }}>
         <Link to="/">To home</Link>

@@ -1,14 +1,16 @@
-import React, { useContext, useRef } from "react";
+import React, { useRef } from "react";
 import { Button, Container } from "react-bootstrap";
 
-import AuthContext from "../store/authContext";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/auth";
+import { setToken } from "../store/token";
 
 const SignUp = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
-  const authCtx = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -38,11 +40,12 @@ const SignUp = () => {
       );
       const data = await res.json();
       if (res.ok) {
-        authCtx.setIdToken(data.idToken);
+        setToken(data.idToken);
+        dispatch(authActions.login());
       } else {
-        let errMessage = "Authentication Failed..."
+        let errMessage = "Authentication Failed...";
         if (data && data.error && data.error.message) {
-            errMessage = data.error.message;
+          errMessage = data.error.message;
         }
         alert(errMessage);
       }

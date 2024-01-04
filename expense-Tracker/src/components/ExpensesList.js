@@ -1,16 +1,55 @@
-import React, { useContext } from "react";
-import ExpenseContext from "../store/expenseContext";
+import React, { useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { expenseActions } from "../store/expense";
+
 import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
 
 const ExpensesList = (props) => {
-  const expenseCtx = useContext(ExpenseContext);
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.expense.expenses);
+  const getData = useCallback(async () => {
+    dispatch(expenseActions.renewExpense());
+    const res = await fetch(
+      "https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json"
+    );
+    const data = await res.json();
+    if (data !== null) {
+      for (let i of Object.values(data)) {
+        dispatch(expenseActions.addExpense(i));
+      }
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  const deleteExpense = async (key) => {
+    const res = await fetch(
+      "https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json"
+    );
+    const data = await res.json();
+    for (let [i, j] of Object.entries(data)) {
+      if (j.key === key) {
+        await fetch(
+          `https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses/${i}.json`,
+          {
+            method: "DELETE",
+          }
+        );
+        break;
+      }
+    }
+    getData();
+  };
 
   const deleteHandler = (key) => {
-    expenseCtx.deleteExpense(key);
+    deleteExpense(key);
   };
 
   const editHandler = (item) => {
-    expenseCtx.deleteExpense(item.key);
+    deleteExpense(item.key);
     props.onChange(item);
   };
 
@@ -30,7 +69,7 @@ const ExpensesList = (props) => {
         </Row>
       </Container>
       <ListGroup>
-        {expenseCtx.expenseList.map((item) => (
+        {items.map((item) => (
           <ListGroup.Item key={item.key} className="text-center">
             <Container>
               <Row>
@@ -38,10 +77,20 @@ const ExpensesList = (props) => {
                 <Col>{item.description}</Col>
                 <Col>{item.category}</Col>
                 <Col>
-                  <Button onClick={deleteHandler.bind(null, item.key)}>Delete</Button>
+                  <Button
+                    variant="danger"
+                    onClick={deleteHandler.bind(null, item.key)}
+                  >
+                    Delete
+                  </Button>
                 </Col>
                 <Col>
-                  <Button onClick={editHandler.bind(null, item)}>Edit</Button>
+                  <Button
+                    variant="warning"
+                    onClick={editHandler.bind(null, item)}
+                  >
+                    Edit
+                  </Button>
                 </Col>
               </Row>
             </Container>

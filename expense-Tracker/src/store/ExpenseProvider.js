@@ -4,7 +4,6 @@ import ExpenseContext from "./expenseContext";
 
 const ExpenseProvider = (props) => {
   const [expenseList, setExpenseList] = useState([]);
-
   async function getData() {
     const res = await fetch(
       "https://expense-tracker-161e4-default-rtdb.asia-southeast1.firebasedatabase.app/expenses.json"
