@@ -1,14 +1,23 @@
-import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { CSVLink } from "react-csv";
 
 import Logout from "../components/Logout";
 import ExpenseInput from "../components/ExpenseInput";
 import ExpensesList from "../components/ExpensesList";
 
-const HomePage = () => {
-  const [item, setItem] = useState(null);
+import { themeActions } from "../store/theme";
+import { useSelector, useDispatch } from "react-redux";
 
+const HomePage = () => {
+  const dispatch = useDispatch();
+
+  const currentTheme = useSelector((state) => state.theme);
+
+  const expenses = useSelector((state) => state.expense.expenses);
+
+  const [item, setItem] = useState(null);
 
   const onChangeHandler = (item) => {
     setItem(item);
@@ -16,10 +25,30 @@ const HomePage = () => {
 
   const onResetHandler = () => {
     setItem(null);
-  }
+  };
+
+  const [darkTheme, setDark] = useState(false);
+
+  const [themeButton, setThemeButton] = useState(false);
+
+  const toggleThemeHandler = () => {
+    setDark((state) => !state);
+  };
+
+  useEffect(() => {
+    if (darkTheme === false) {
+      dispatch(themeActions.setLight());
+    } else {
+      dispatch(themeActions.setDark());
+    }
+  }, [darkTheme, dispatch]);
+
+  const changeThemeHandler = () => {
+    setThemeButton(true);
+  };
 
   return (
-    <React.Fragment>
+    <div style={currentTheme}>
       <Container>
         <div className="position-absolute top-0 end-0">
           <Logout />
@@ -41,11 +70,25 @@ const HomePage = () => {
           </Col>
         </Row>
       </Container>
+      <div style={{ textAlign: "center" }}>
+        {themeButton && (
+          <Button onClick={toggleThemeHandler}>
+            {darkTheme ? "Light" : "Dark"}
+          </Button>
+        )}
+      </div>
       <h2 style={{ textAlign: "center" }}>New Expense</h2>
-      <ExpenseInput item={item} onReset={onResetHandler} />
+      <ExpenseInput
+        item={item}
+        onReset={onResetHandler}
+        changeTheme={changeThemeHandler}
+      />
       <h2 style={{ textAlign: "center" }}>Expenses</h2>
       <ExpensesList onChange={onChangeHandler} />
-    </React.Fragment>
+      <div style={{ textAlign: "center" }}>
+        <CSVLink data={expenses}>Download Expenses</CSVLink>
+      </div>
+    </div>
   );
 };
 

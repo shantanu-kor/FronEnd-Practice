@@ -88,7 +88,7 @@ const ExpenseInput = (props) => {
         <option value="Other">Other</option>
       </select>
       <br />
-      {totalExpense >= 10000 ? <Button variant="dark" className="my-2">Activate Premium</Button> :
+      {totalExpense >= 10000 ? <Button variant="dark" className="my-2" onClick={props.changeTheme}>Activate Premium</Button> :
       <Button variant="dark" className="my-2" type="submit">
         Add Expense
       </Button>
