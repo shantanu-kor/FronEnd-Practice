@@ -12,6 +12,7 @@ const AuthProvider = (props) => {
   };
 
   const addEmailHandler = (e_mail) => {
+    localStorage.setItem("actualEmail", e_mail);
     let email = e_mail;
     let semail = email.split('.');
     email = ''
@@ -30,6 +31,7 @@ const AuthProvider = (props) => {
   const removeCredHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
+    localStorage.removeItem("actualEmail");
     setToken(localStorage.getItem("token"));
     setEmail(localStorage.getItem("email"));
   };
