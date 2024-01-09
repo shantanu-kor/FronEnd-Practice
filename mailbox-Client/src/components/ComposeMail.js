@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 
 const ComposeEmail = () => {
   const toRef = useRef();
@@ -28,7 +28,7 @@ const ComposeEmail = () => {
     });
     toList1.forEach(async (email) => {
       const res = await fetch(
-        `https://mailbox-client-7b1e9-default-rtdb.asia-southeast1.firebasedatabase.app/recieved${email}.json`,
+        `https://mailbox-client-7b1e9-default-rtdb.asia-southeast1.firebasedatabase.app/received${email}.json`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -106,6 +106,7 @@ const ComposeEmail = () => {
         ref={subjectRef}
       />
       <br />
+      <Container>
       <Editor
         editorState={editorState}
         onEditorStateChange={setEditorState}
@@ -113,6 +114,7 @@ const ComposeEmail = () => {
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"
       />
+      </Container>
       <Button type="submit">Send</Button>
     </form>
   );
